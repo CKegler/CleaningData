@@ -55,3 +55,8 @@ activityLabels <- read.table("UCI HAR Dataset/activity_labels.txt",sep = "", str
 mergedSet2 <-  merge(mergedSet,activityLabels, by.x="Activity" , by.y="ID", all=TRUE)
 
 mergedSet2 <- mergedSet2[  , c(563, 1:562)  ] 
+
+# For step (2), extract only columns with mean or standard deviation in column name
+setMeanStds <- select( mergedSet2,  contains("mean", ignore.case = TRUE), contains("std", ignore.case = TRUE))
+
+write.table(setMeanStds, file="UCI_Means_Stds.txt", sep=" ", col.names=TRUE)
