@@ -60,3 +60,25 @@ mergedSet2 <- mergedSet2[  , c(563, 1:562)  ]
 setMeanStds <- select( mergedSet2,  contains("mean", ignore.case = TRUE), contains("std", ignore.case = TRUE))
 
 write.table(setMeanStds, file="UCI_Means_Stds.txt", sep=" ", col.names=TRUE)
+
+
+# For step 5
+# extract the subject IDs for the training sets
+trainingSubjectIds <- read.table("UCI HAR Dataset/train/subject_train.txt",sep = "", strip.white=TRUE, header=FALSE, col.names=c( "Subject"))
+
+# extract the subject IDs for the test sets
+testSubjectIds <- read.table("UCI HAR Dataset/test/subject_test.txt",sep = "", strip.white=TRUE, header=FALSE, col.names=c( "Subject"))
+
+
+# combine the activity labels for the test and training data
+mergedSubjectIds <- rbind(trainingSubjectIds, testSubjectIds)
+
+
+mergedSet2 <-  cbind(mergedSubjectIds, mergedSet2)
+#Melt the mergedSet2 dataset to identify
+
+###md <- dcast (mergedSet2, Subject + ActivityLabel ~ MeanOfActivity , mean)
+
+md <- melt(mergedSet2, id=(c("Subject","ActivityLabel" )))
+grouped <- group_by(md,  Subject, ActivityLabel)
+
