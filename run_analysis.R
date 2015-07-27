@@ -80,5 +80,8 @@ mergedSet2 <-  cbind(mergedSubjectIds, mergedSet2)
 ###md <- dcast (mergedSet2, Subject + ActivityLabel ~ MeanOfActivity , mean)
 
 md <- melt(mergedSet2, id=(c("Subject","ActivityLabel" )))
-grouped <- group_by(md,  Subject, ActivityLabel)
+subjmeans <- cast(md, Subject+ActivityLabel~variable, mean)
+
+write.table(subjmeans, file="Subject_Activity_Means.txt", sep=" ", col.names=TRUE)
+
 
